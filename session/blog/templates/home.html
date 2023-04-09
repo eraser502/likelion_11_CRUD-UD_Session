@@ -1,7 +1,21 @@
-<h1>LIKELION 11 Blog Project</h1>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+도훈이의 블로그 홈페이지!!
+{% endblock title %}
+
+{% block extrahead %}
+
+{% endblock extrahead %}
+
+{% block content %}
+<h1>LIKELION 11 Blog Project
+    <img src="{%static 'blog/img/quokka.jpg'%}" style="width: 72px;"/>
+</h1>
 <a href="{% url 'new' %}">새 글 작성하기</a>
 <div>
-    {% for blog in blogs %}
+    {% for blog in page_obj %}
     <a href="{%url 'detail' blog.id %}">
         <h2>{{blog.title}}</h2>
         <p>{{blog.summary}}</p>
@@ -9,3 +23,29 @@
     </a>
     {% endfor %}
 </div>
+
+<span>
+    {% if page_obj.has_previous %}
+    <a href="?page=1">처음으로</a>
+    <a href="?page={{page_obj.previous_page_number}}">이전</a>
+    {% endif %}
+
+    {% for i in page_obj.paginator.page_range %}
+        {% if i == page_obj.number %}
+            <strong>{{ i }}</strong>
+        {% else %}
+            <a href="?page={{ i }}">{{ i }}</a>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+    <a href="?page={{page_obj.next_page_number}}">다음</a>
+    <a href="?page={{page_obj.paginator.num_pages}}">마지막으로</a>
+    {% endif %}
+</span>
+
+
+{% endblock content %}
+
+
+
